@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaShoppingCart } from "react-icons/fa";
 import Link from 'next/link';
+import productData from '../../data/products.json'; 
 
 interface DropdownContentProps {
   open: boolean;
@@ -129,6 +130,9 @@ const Header = () => {
     setIsMenuOpen(false);
   };
 
+  // Ürün verilerinden kategorileri çıkar
+  const categories = Array.from(new Set(productData.products.map(product => product.category)));
+
   return (
     <HeaderContainer>
       <Logo>
@@ -144,9 +148,9 @@ const Header = () => {
           <NavItemLink href="/#">Kategoriler</NavItemLink>
           <DropdownMenu>
             <DropdownContent open={isMenuOpen}>
-              <DropdownItem href="#kategori1">Kategori 1</DropdownItem>
-              <DropdownItem href="#kategori2">Kategori 2</DropdownItem>
-              <DropdownItem href="#kategori3">Kategori 3</DropdownItem>
+              {categories.map((category, index) => (
+                <DropdownItem key={index+1} href={`/${index+1}`}>{category}</DropdownItem>
+              ))}
             </DropdownContent>
           </DropdownMenu>
         </NavItem>
