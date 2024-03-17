@@ -130,7 +130,7 @@ const Header = () => {
     setIsMenuOpen(false);
   };
 
-  // Ürün verilerinden kategorileri çıkar
+  // Ürün verilerinden kategorileri çek
   const categories = Array.from(new Set(productData.products.map(product => product.category)));
 
   return (
@@ -149,7 +149,7 @@ const Header = () => {
           <DropdownMenu>
             <DropdownContent open={isMenuOpen}>
               {categories.map((category, index) => (
-                <DropdownItem key={index+1} href={`/${index+1}`}>{category}</DropdownItem>
+                <DropdownItem key={index+1} href={`/category/${index+1}`}>{category}</DropdownItem>
               ))}
             </DropdownContent>
           </DropdownMenu>
