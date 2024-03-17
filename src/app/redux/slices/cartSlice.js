@@ -1,35 +1,35 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-//Create Initial State
-const initialState = [];
+// Varsa localStorage'dan sepet durumunu al
+const initialState = JSON.parse(localStorage.getItem("cart")) || [];
 
-//Create the slice with Reducers
 const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
     addToCart: (state, action) => {
       const { id, title, brand, price, image } = action.payload;
-      // Check if the item already exists in the cart
       const existingItem = state.find((item) => item.id === id);
 
       if (existingItem) {
-        // If the item exists, update the quantity
         existingItem.quantity += 1;
       } else {
-        // If the item doesn't exist, add it to the cart
         state.push({ id, title, brand, price, quantity: 1, image });
       }
+      localStorage.setItem("cart", JSON.stringify(state));
     },
     removeFromCart: (state, action) => {
       const cartId = action.payload;
-      return state.filter((item) => item.id !== cartId);
+      const updatedCart = state.filter((item) => item.id !== cartId);
+      state.splice(0, state.length, ...updatedCart);
+      localStorage.setItem("cart", JSON.stringify(state));
     },
     incrementQty: (state, action) => {
       const cartId = action.payload;
       const cartItem = state.find((item) => item.id === cartId);
       if (cartItem) {
         cartItem.quantity += 1;
+        localStorage.setItem("cart", JSON.stringify(state));
       }
     },
     decrementQty: (state, action) => {
@@ -37,12 +37,12 @@ const cartSlice = createSlice({
       const cartItem = state.find((item) => item.id === cartId);
       if (cartItem && cartItem.quantity > 1) {
         cartItem.quantity -= 1;
+        localStorage.setItem("cart", JSON.stringify(state));
       }
     },
   },
 });
 
-//export the reducers(actions)
 export const { addToCart, removeFromCart, incrementQty, decrementQty } =
   cartSlice.actions;
 export default cartSlice.reducer;

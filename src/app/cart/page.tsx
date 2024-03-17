@@ -1,8 +1,8 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { decrementQty, incrementQty, removeFromCart } from '../redux/slices/cartSlice';
 import toast from 'react-hot-toast';
 
@@ -98,10 +98,17 @@ interface Product {
 
 export default function Cart() {
   const dispatch = useDispatch();
-  const cartItems = useSelector((state: { cart: Product[] }) => state.cart);
-  const totalPrice = cartItems.reduce((acc: any, currentItem: any) => {
+  const [cartItems, setCartItems] = useState<Product[]>([]); 
+
+  const totalPrice = cartItems.reduce((acc: number, currentItem: Product) => {
     return acc + currentItem.price * currentItem.quantity;
   }, 0);
+
+  useEffect(() => {
+    // LocalStorage'dan sepetteki ürün bilgilerini getir
+    const storedCartItems = JSON.parse(localStorage.getItem("cart") || "[]"); 
+    setCartItems(storedCartItems);
+  }, [cartItems]);
 
   const handleItemIncrement = (productId: number) => {
     dispatch(incrementQty(productId));
@@ -126,7 +133,7 @@ export default function Cart() {
               <ProductCard key={product.id}>
                 <ProductImage src={product.image} />
                 <ProductInfo>
-                  <Link href="#">
+                  <Link href={`/product/${product.id}`}>
                     <h3>{product.name}</h3>
                   </Link>
                   <p>{product.brand}</p>
