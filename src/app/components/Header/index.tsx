@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { FaShoppingCart } from "react-icons/fa";
 import Link from 'next/link';
 import productData from '../../data/products.json'; 
+import { useSelector } from 'react-redux';
 
 interface DropdownContentProps {
   open: boolean;
@@ -121,6 +122,7 @@ const NavItemLink = styled(Link)`
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const cartItems=useSelector((state:any)=>state.cart)
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -158,7 +160,7 @@ const Header = () => {
           <StyledLink href="/cart">
           <CartIcon>
             <FaShoppingCart size={24} />
-            <CartCount>3</CartCount>
+            <CartCount>{cartItems.length}</CartCount>
           </CartIcon>
           </StyledLink>
         </NavItem>
