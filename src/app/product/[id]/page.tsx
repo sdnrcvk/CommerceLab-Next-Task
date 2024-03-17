@@ -3,23 +3,38 @@ import React from 'react';
 import styled from 'styled-components';
 import { useParams } from 'next/navigation';
 import productData from '../../data/products.json';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '@/app/redux/slices/cartSlice';
+import toast from 'react-hot-toast';
 
-const ProductDetailContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 50px;
-`;
-
-const ProductDetailCard = styled.div`
-  width: 800px;
-  padding: 20px;
+const ContainerWrapper = styled.div`
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1250px;
+  display: flex; 
+  justify-content: center;
+  padding: 1.2rem;
+  background-color: #f5f5f5;
+`;
+
+const ProductDetailContainer = styled.div`
+  display: flex; 
+  width: 100%;
+`;
+
+const ProductDetailCard = styled.div`
+  flex: 1; 
+  padding: 20px;
 `;
 
 const ProductImage = styled.img`
-  width: 100%;
+  width: 50%;
   max-height: 400px;
   object-fit: contain;
   border-radius: 8px;
@@ -49,13 +64,13 @@ const ProductPrice = styled.p`
 `;
 
 const AddToCartButton = styled.button`
-  padding: 10px 20px;
+  padding: 12px 24px; 
   background-color: #007bff;
   color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 18px; 
   transition: background-color 0.3s ease;
 
   &:hover {
@@ -64,29 +79,33 @@ const AddToCartButton = styled.button`
 `;
 
 const Product = () => {
-  const { id } = useParams(); // Router'dan id parametresini al
+  const { id } = useParams(); 
+  const dispatch = useDispatch();
 
   const product = productData.products.find(product => product.id === parseInt(id as string));
-
-  const addToCart = () => {
-    console.log('Ürün sepete eklendi.');
-  };
 
   if (!product) {
     return <div>Ürün bulunamadı.</div>;
   }
 
+  function handleAddItemToCart() {
+    dispatch(addToCart(product));
+    toast.success('Ürün sepete eklendi!');
+  }
+
   return (
-    <ProductDetailContainer>
-      <ProductDetailCard>
+    <ContainerWrapper>
+      <ProductDetailContainer>
         <ProductImage src={product.image} alt={product.title} />
-        <ProductTitle>{product.title}</ProductTitle>
-        <ProductBrand>Marka: {product.brand}</ProductBrand>
-        <ProductDescription>{product.description}</ProductDescription>
-        <ProductPrice>Fiyat: ${product.price}</ProductPrice>
-        <AddToCartButton onClick={addToCart}>Sepete Ekle</AddToCartButton>
-      </ProductDetailCard>
-    </ProductDetailContainer>
+        <ProductDetailCard>
+          <ProductTitle>{product.title}</ProductTitle>
+          <ProductBrand>Marka: {product.brand}</ProductBrand>
+          <ProductDescription>{product.description}</ProductDescription>
+          <ProductPrice>Fiyat: ${product.price}</ProductPrice>
+          <AddToCartButton onClick={handleAddItemToCart}>Sepete Ekle</AddToCartButton>
+        </ProductDetailCard>
+      </ProductDetailContainer>
+    </ContainerWrapper>
   );
 };
 
