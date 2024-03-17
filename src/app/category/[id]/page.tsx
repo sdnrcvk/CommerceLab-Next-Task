@@ -5,11 +5,25 @@ import { useParams } from 'next/navigation';
 import productData from '../../data/products.json'; 
 import Link from 'next/link';
 
+const ContainerWrapper = styled.div`
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1250px;
+  padding:1.2rem;
+  background-color: #F5F5F5;
+`;
+
 const ProductContainer = styled.div`
   display: flex;
   flex-wrap: wrap; /* Allow products to wrap to the next row */
   gap: 20px; 
-  margin-top: 30px;
+  margin-top: 10px;
   justify-content: center; /* Center products horizontally */
   margin-left: auto; 
   margin-right: auto;
@@ -17,18 +31,19 @@ const ProductContainer = styled.div`
 `;
 
 const ProductCard = styled.div`
-  width: calc(27% - 20px); /* Set width for 3 columns with a gap of 20px */
+  width: calc(27% - 20px); 
   margin-bottom: 20px;
   padding: 15px;
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
 `;
 
 const ProductImage = styled.img`
   width: 100%;
-  max-height: 200px; /* Örneğin 200 piksel maksimum yükseklik */
-  object-fit: contain; /* Resmi kutunun içine sığacak şekilde boyutlandırır */
+  max-height: 200px; 
+  object-fit: contain; 
 `;
 
 const Pagination = styled.div`
@@ -61,9 +76,21 @@ const CurrentPageButton = styled(PaginationButton)<{ active?: boolean }>`
   background-color: ${({ active }) => (active ? "#ccc" : "#f9f9f9")};
 `;
 
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: #000;
+
+  &:focus,
+  &:hover,
+  &:visited,
+  &:link,
+  &:active {
+    text-decoration: none;
+  }
+`;
 export default function Category () {
-  const params = useParams();
-  const id=params.id;
+  // Router'dan id parametresini al
+  const { id } = useParams(); 
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 9; 
 
@@ -99,16 +126,18 @@ export default function Category () {
   };
 
   return (
-    <div>
+    <ContainerWrapper>
       <ProductContainer>
         {currentProducts.map(product => (
           <ProductCard key={product.id}>
-            <Link href={`/product/${product.id}`} key={product.id}>
+            <StyledLink href={`/product/${product.id}`} key={product.id}>
             <h3>{product.title}</h3>
-            </Link>
+            </StyledLink>
             <p>{product.brand}</p>
             <p>Price: ${product.price}</p>
+            <StyledLink href={`/product/${product.id}`} key={product.id}>
             <ProductImage src={product.image} alt={product.title} />
+            </StyledLink>
           </ProductCard>
         ))}
       </ProductContainer>
@@ -126,6 +155,6 @@ export default function Category () {
         ))}
         <PrevNextButton onClick={nextPage}>Sonraki</PrevNextButton>
       </Pagination>
-    </div>
+    </ContainerWrapper>
   );
 };
