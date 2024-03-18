@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'next/navigation';
 import productData from '../../data/products.json'; 
@@ -72,8 +72,8 @@ const PrevNextButton = styled(PaginationButton)`
   background-color: #f3f3f3;
 `;
 
-const CurrentPageButton = styled(PaginationButton)<{ active?: boolean }>`
-  background-color: ${({ active }) => (active ? "#ccc" : "#f9f9f9")};
+const CurrentPageButton = styled(PaginationButton)`
+  background-color:#ccc;
 `;
 
 const StyledLink = styled(Link)`
@@ -89,14 +89,30 @@ const StyledLink = styled(Link)`
   }
 `;
 
+type Product = {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  brand: string;
+  category: string;
+  categoryId: number;
+  image: string;
+};
+
 export default function Category () {
   // Router'dan id parametresini al
   const { id } = useParams(); 
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 9; 
 
-  // Kategori id'sine göre ürün getir
-  const categoryProducts = productData.products.filter(product => product.categoryId === parseInt(id as string));
+  const [categoryProducts, setCategoryProducts] = useState<Product[]>([]);
+
+  // Ürünleri almak için useEffect kullan
+  useEffect(() => {
+    const products = productData.products.filter(product => product.categoryId === parseInt(id as string));
+    setCategoryProducts(products);
+  }, [id]);
 
   // Sayfalandırma değişkenlerini hesapla
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -107,7 +123,7 @@ export default function Category () {
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber); 
 
   // Sayfa numaralarını hesapla
-  const pageNumbers = [];
+  const pageNumbers:number[]=[];
   for (let i = 1; i <= Math.ceil(categoryProducts.length / productsPerPage); i++) {
     pageNumbers.push(i);
   }
@@ -148,8 +164,8 @@ export default function Category () {
         {pageNumbers.map(number => (
           <CurrentPageButton
             key={number}
-            active={currentPage === number}
             onClick={() => paginate(number)}
+            style={{ backgroundColor: currentPage === number ? '#ccc' : '#f9f9f9' }}
           >
             {number}
           </CurrentPageButton>
