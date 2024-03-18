@@ -8,8 +8,8 @@ const SliderContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 90vh; /* Örneğin 80vh olarak ayarlayabilirsiniz */
-  width: 70%; /* Slider genişliği */
+  height: 90vh; 
+  width: 70%; 
   margin: auto;
 `;
 
@@ -37,7 +37,7 @@ function SimpleSlider() {
         <div>
           <SlideImageContainer>
             <img
-              src="https://images.unsplash.com/photo-1557821552-17105176677c?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              src="https://images.unsplash.com/photo-1541596993953-970dd2ffdbdb?q=80&w=2068&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt=""
               style={{ maxWidth: "100%", maxHeight: "80vh", width: "auto", height: "auto" }}
             />
