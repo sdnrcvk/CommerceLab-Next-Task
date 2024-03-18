@@ -21,10 +21,10 @@ const ContainerWrapper = styled.div`
 
 const ProductContainer = styled.div`
   display: flex;
-  flex-wrap: wrap; /* Allow products to wrap to the next row */
+  flex-wrap: wrap; 
   gap: 20px; 
   margin-top: 10px;
-  justify-content: center; /* Center products horizontally */
+  justify-content: center; 
   margin-left: auto; 
   margin-right: auto;
   max-width: 1200px; 
@@ -88,6 +88,7 @@ const StyledLink = styled(Link)`
     text-decoration: none;
   }
 `;
+
 export default function Category () {
   // Router'dan id parametresini al
   const { id } = useParams(); 
