@@ -36,8 +36,8 @@ const CategoryProducts: React.FC<CategoryProductsProps> = ({ categoryId }) => {
   const [categoryName, setCategoryName] = useState<string>('');
 
   useEffect(() => {
-    // Kategoriye göre ürünleri filtre
-    const categoryProducts = productData.products.filter(product => product.categoryId === categoryId);
+    // Kategoriye göre ürünleri filtre.İlk 12 ürünü al
+    const categoryProducts = productData.products.filter(product => product.categoryId === categoryId).slice(0, 12); 
     setProducts(categoryProducts);
 
     // Kategori adını bul
@@ -45,7 +45,6 @@ const CategoryProducts: React.FC<CategoryProductsProps> = ({ categoryId }) => {
     if (category) {
       setCategoryName(category.category);
     }
-
   }, [categoryId]);
 
   const settings = {
