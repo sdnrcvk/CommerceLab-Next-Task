@@ -106,21 +106,28 @@ export default function Cart() {
 
   useEffect(() => {
     // LocalStorage'dan sepetteki ürün bilgilerini getir
+    handleUpdateLocalCart();
+  }, []);
+
+  const handleUpdateLocalCart=()=>{
     const storedCartItems = JSON.parse(localStorage.getItem("cart") || "[]"); 
     setCartItems(storedCartItems);
-  }, [cartItems]);
+  }
 
   const handleItemIncrement = (productId: number) => {
     dispatch(incrementQty(productId));
+    handleUpdateLocalCart();
   };
 
   const handleItemDecrement = (productId: number) => {
     dispatch(decrementQty(productId));
+    handleUpdateLocalCart();
   };
 
   const handleItemDelete = (productId: number) => {
     dispatch(removeFromCart(productId));
     toast.success('Ürün sepetten silindi!');
+    handleUpdateLocalCart();
   };
 
   return (

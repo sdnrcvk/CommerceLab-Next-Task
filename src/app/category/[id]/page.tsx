@@ -130,12 +130,12 @@ export default function Category () {
       <ProductContainer>
         {currentProducts.map(product => (
           <ProductCard key={product.id}>
-            <StyledLink href={`/product/${product.id}`} key={product.id}>
+            <StyledLink href={`/product/${product.id}`}>
             <h3>{product.title}</h3>
             </StyledLink>
             <p>{product.brand}</p>
             <p>Price: ${product.price}</p>
-            <StyledLink href={`/product/${product.id}`} key={product.id}>
+            <StyledLink href={`/product/${product.id}`}>
             <ProductImage src={product.image} alt={product.title} />
             </StyledLink>
           </ProductCard>
